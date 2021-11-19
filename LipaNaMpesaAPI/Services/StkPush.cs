@@ -17,7 +17,7 @@ namespace LipaNaMpesaAPI.Services
         public static bool MpesaStk(string PhoneNumber, string Amount, string Account, string businessCode, string consumerKey, string consumerSecret, string passKey, string description)
         {
 
-            var BaseUrl = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("MpesaUrls")["STK_BASEURL"];
+            var BaseUrl = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("MpesaUrls")["SANDBOX_STK_BASEURL"];
             string TimeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
             string Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(businessCode + passKey + TimeStamp));
             string token = accessToken(consumerKey, consumerSecret);
@@ -54,7 +54,7 @@ namespace LipaNaMpesaAPI.Services
 
         public static string accessToken(string consumerKey, string consumerSecret)
         {
-            var AccessTokenUrl = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("MpesaUrls")["ACCESS_TOKEN_URL"];
+            var AccessTokenUrl = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("MpesaUrls")["SANDBOX_ACCESS_TOKEN_URL"];
 
             HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(AccessTokenUrl);
 

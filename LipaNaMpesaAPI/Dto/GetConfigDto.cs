@@ -9,6 +9,7 @@ namespace LipaNaMpesaAPI.Dto
     {
         public int Id { get; set; }
         public string BusinessName { get; set; }
+        public string BusinessId { get; set; }
         public string ConsumerKey { get; set; }
         public string ConsumerSecret { get; set; }
         public string BusinessCode { get; set; }

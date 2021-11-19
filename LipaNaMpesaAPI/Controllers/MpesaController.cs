@@ -34,12 +34,14 @@ namespace LipaNaMpesaAPI.Controllers
                 return Unauthorized("Paybill already exists");
             }
 
+            Random random = new();
             var mpesaConfig = new Setting
             {
                 ConsumerKey = mpesaSettings.ConsumerKey,
                 ConsumerSecret =mpesaSettings.ConsumerSecret ,
                 BusinessCode = mpesaSettings.BusinessCode,
                 BusinessName = mpesaSettings.BusinessName,
+                BusinessId = mpesaSettings.BusinessName.Substring(0, 4).ToUpper()+random.Next(1000).ToString(),
                 PassKey = mpesaSettings.PassKey,
                 TransactionDesc = mpesaSettings.TransactionDesc,
                 DateCreated = DateTime.Now
@@ -51,10 +53,10 @@ namespace LipaNaMpesaAPI.Controllers
             return Created("Confiurations saved succesfully", mpesaSettings);
         }
 
-        [HttpGet("{businessName}")]
-        public async Task<IActionResult> GetOneStudentInfo(string businessName)
+        [HttpGet("{businessID}")]
+        public async Task<IActionResult> GetOneStudentInfo(string businessID)
         {
-            var config = await _db.Settings.SingleOrDefaultAsync(x => x.BusinessName.ToLower() == businessName.ToLower());
+            var config = await _db.Settings.SingleOrDefaultAsync(x => x.BusinessId.ToUpper() == businessID.ToUpper());
             if (config == null)
             {
                 return NotFound();
@@ -64,9 +66,9 @@ namespace LipaNaMpesaAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> MakePayment(string businessName, string phoneNumber, string Amount, string AccountNumber)
+        public async Task<IActionResult> MakePayment(string businessID, string phoneNumber, string Amount, string AccountNumber)
         {
-            var config = await _db.Settings.SingleOrDefaultAsync(x => x.BusinessName.ToLower() == businessName.ToLower());
+            var config = await _db.Settings.SingleOrDefaultAsync(x => x.BusinessId.ToUpper() == businessID.ToUpper());
             if (config == null)
             {
                 return NotFound();
